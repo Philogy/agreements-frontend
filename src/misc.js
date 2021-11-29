@@ -32,8 +32,12 @@ const round = (num, places = 2) => {
   return +`${roundedPreShift}e-${places}`
 }
 
-const format = (num, maxFracDigits = 3) => {
-  return Intl.NumberFormat('en-us', { maximumFractionDigits: maxFracDigits }).format(num)
+const format = (num, maxFracDigits = 3, minFracDigits = null) => {
+  minFracDigits ??= maxFracDigits
+  return Intl.NumberFormat('en-us', {
+    maximumFractionDigits: maxFracDigits,
+    minimumFractionDigits: minFracDigits
+  }).format(num)
 }
 
 export { s, divmod, min, displaySValue, longestSeq, displayTimeDelta, round, format }
