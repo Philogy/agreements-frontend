@@ -191,7 +191,7 @@ function NFTAuction() {
                 <span>{bid} xDAI</span>
                 <span>
                   from{' '}
-                  <a href={`https://blockscout.com/address/${bidder}`} className="text-blue-200">
+                  <a href={`https://blockscout.com/address/${bidder}`} className="text-blue-400">
                     {shortenIfAddress(bidder)}
                   </a>
                 </span>
