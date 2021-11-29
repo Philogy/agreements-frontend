@@ -139,7 +139,7 @@ function NFTAuction() {
       </div>
       <div className="flex flex-col items-center">
         <h2 className="text-3xl">
-          Top bid: <span className="font-bold">{formatBN(topBid)} xDAI</span>
+          Top bid: <span className="font-bold">${format(bnToFloat(topBid), 2)}</span>
         </h2>
         <p>
           (from:{' '}
@@ -211,7 +211,7 @@ function NFTAuction() {
                   className="bg-gray-100 p-2 shadow-md rounded flex flex-col items-center justify-center min-w-max h-24"
                   key={i}
                 >
-                  <span>{bid} xDAI</span>
+                  <span>${format(bid)}</span>
                   <span>
                     from{' '}
                     <a
