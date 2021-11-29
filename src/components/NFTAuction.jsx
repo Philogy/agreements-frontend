@@ -10,10 +10,16 @@ function AuctionFooter() {
   return (
     <div className="absolute w-screen bottom-0 left-0 flex justify-center items-center bg-gray-200 h-24">
       <div className="flex justify-around w-1/3">
-        <a href="https://www.blockscout.com/xdai/mainnet/address/0x45373E3173c17bEB3cD86D35092D0C4c7385ea23/read-contract">
+        <a
+          href="https://www.blockscout.com/xdai/mainnet/address/0x45373E3173c17bEB3cD86D35092D0C4c7385ea23/read-contract"
+          className="text-blue-500 hover:underline"
+        >
           blockscout
         </a>
-        <a href="https://github.com/Philogy/web3-agreements/blob/main/contracts/NFTSale.sol">
+        <a
+          href="https://github.com/Philogy/web3-agreements/blob/main/contracts/NFTSale.sol"
+          className="text-blue-500 hover:underline"
+        >
           github
         </a>
         <span>Message Philogy#8073 on Discord about any questions</span>
