@@ -36,7 +36,6 @@ const useEvents = (callEncoder, eventConfig, ...args) => {
     const eventFilter =
       typeof eventConfig === 'string' ? contract.filters[eventConfig]() : eventConfig
     setEvents(await contract.queryFilter(eventFilter, ...args))
-    console.log('events: ', events)
   }, [blockNumber, library])
 
   return events
