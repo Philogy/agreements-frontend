@@ -32,4 +32,8 @@ const round = (num, places = 2) => {
   return +`${roundedPreShift}e-${places}`
 }
 
-export { s, divmod, min, displaySValue, longestSeq, displayTimeDelta, round }
+const format = (num, maxFracDigits = 3) => {
+  return Intl.NumberFormat('en-us', { maximumFractionDigits: maxFracDigits }).format(num)
+}
+
+export { s, divmod, min, displaySValue, longestSeq, displayTimeDelta, round, format }

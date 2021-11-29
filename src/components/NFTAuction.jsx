@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Button, notification, InputNumber } from 'antd'
 import { useEthers, shortenIfAddress, useEtherBalance, useBlockNumber } from '@usedapp/core'
-import { utils } from 'ethers'
+import { utils, BigNumber, constants } from 'ethers'
 import { useInterval } from '../hook.js'
-import { nftAuction } from '../usedapp/contracts.js'
-import { displayTimeDelta, round, s } from '../misc.js'
+import { nftAuction, useTotalPendingComb, useXCombPoolPrice } from '../usedapp/contracts.js'
+import { displayTimeDelta, round, format, s } from '../misc.js'
 
 function AuctionFooter() {
   return (
@@ -46,6 +46,19 @@ function NFTAuction() {
     blocksPassed: blockNumber - eventBlockNumber
   }))
   const pastBids = allBids.slice(0, -1)
+
+  const pendingComb = useTotalPendingComb()
+  const xCombPoolPrices = useXCombPoolPrice()
+  const lpTokens = BigNumber.from('1674473043723539723703')
+  const totalLPValue = bnToFloat(
+    xCombPoolPrices && xCombPoolPrices.lpPrice.mul(lpTokens).div(constants.WeiPerEther)
+  )
+  const totalCombValue = bnToFloat(
+    xCombPoolPrices &&
+      pendingComb &&
+      pendingComb.mul(xCombPoolPrices.xCombPrice).div(constants.WeiPerEther)
+  )
+  const totalValue = totalLPValue && totalCombValue && totalLPValue + totalCombValue
 
   const pendingRefund = nftAuction.usePendingRefund(account)
   const { send: sendWithdrawPayments } = nftAuction.useMethodCall('withdrawPayments')
@@ -105,9 +118,12 @@ function NFTAuction() {
       <div className="absolute left-0 top-0 flex justify-between items-center align-center w-full bg-gray-200 h-24 p-8">
         <div className="flex flex-col">
           <span className="text-3xl font-bold">
-            Auctioning off farming deposits worth around $2,600
+            Auctioning off farming deposits worth around ${format(totalValue, 2)}
           </span>
-          <span>1,674 xCOMB-xDAI LP tokens + 300 xCOMB tokens</span>
+          <span>
+            {format(bnToFloat(lpTokens), 2)} xCOMB-xDAI LP tokens (${format(totalLPValue, 2)}) +{' '}
+            {format(bnToFloat(pendingComb), 2)} xCOMB tokens (${format(totalCombValue, 2)})
+          </span>
         </div>
         <div>
           {account ? (
@@ -186,29 +202,31 @@ function NFTAuction() {
             )}
           </div>
         </div>
-        <div className="flex flex-col mt-8 w-2/3 overflow-x-auto px-8 pb-4">
+        <div className="mt-8 w-2/3 flex flex-col">
           <h2 className="text-lg font-bold">Past bids</h2>
-          <div className="flex space-x-4">
-            {pastBids.reverse().map(({ bidder, bid, blocksPassed }, i) => (
-              <div
-                className="bg-gray-100 p-2 shadow-md rounded flex flex-col items-center justify-center w-48 h-24"
-                key={i}
-              >
-                <span>{bid} xDAI</span>
-                <span>
-                  from{' '}
-                  <a
-                    href={`https://blockscout.com/address/${bidder}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    {shortenIfAddress(bidder)}
-                  </a>
-                </span>
-                <span>
-                  {blocksPassed} block{s(blocksPassed)} ago
-                </span>
-              </div>
-            ))}
+          <div className="overflow-x-auto px-8 pb-4">
+            <div className="flex space-x-8">
+              {pastBids.reverse().map(({ bidder, bid, blocksPassed }, i) => (
+                <div
+                  className="bg-gray-100 p-2 shadow-md rounded flex flex-col items-center justify-center min-w-max h-24"
+                  key={i}
+                >
+                  <span>{bid} xDAI</span>
+                  <span>
+                    from{' '}
+                    <a
+                      href={`https://blockscout.com/address/${bidder}`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      {shortenIfAddress(bidder)}
+                    </a>
+                  </span>
+                  <span>
+                    {blocksPassed} block{s(blocksPassed)} ago
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
