@@ -118,7 +118,7 @@ function NFTAuction() {
       <div className="absolute left-0 top-0 flex justify-between items-center align-center w-full bg-gray-200 h-24 p-8">
         <div className="flex flex-col">
           <span className="text-3xl font-bold">
-            Auctioning off farming deposits worth around ${format(totalValue, 2)}
+            Auctioning off farming deposits worth ${format(totalValue, 2)}
           </span>
           <span>
             {format(bnToFloat(lpTokens), 2)} xCOMB-xDAI LP tokens (${format(totalLPValue, 2)}) +{' '}
