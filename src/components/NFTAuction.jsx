@@ -238,7 +238,7 @@ function NFTAuction() {
                     </a>
                   </span>
                   <span>
-                    {blocksPassed} block{s(blocksPassed)} ago
+                    {format(blocksPassed, 0)} block{s(blocksPassed)} ago
                   </span>
                 </div>
               ))}

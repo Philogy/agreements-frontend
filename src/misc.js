@@ -33,7 +33,7 @@ const round = (num, places = 2) => {
 }
 
 const format = (num, maxFracDigits = 3, minFracDigits = null) => {
-  minFracDigits ??= maxFracDigits
+  minFracDigits = minFracDigits ?? maxFracDigits
   return Intl.NumberFormat('en-us', {
     maximumFractionDigits: maxFracDigits,
     minimumFractionDigits: minFracDigits
